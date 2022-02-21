@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../../constants";
 import Icon from "../Icon/Icon";
-import VisuallyHidden from "../VisuallyHidden";
 import { getDisplayedValue } from "./Select.helpers";
 
 const Select = ({ label, value, onChange, children }) => {
@@ -11,13 +10,22 @@ const Select = ({ label, value, onChange, children }) => {
   return (
     <Wrapper value={value} onChange={onChange}>
       {displayedValue}
+      <HiddenSelect>{children}</HiddenSelect>
       <InlineIcon id={"chevron-down"} strokeWidth={2} />
-      <VisuallyHidden>
-        <HiddenSelect>{children}</HiddenSelect>
-      </VisuallyHidden>
     </Wrapper>
   );
 };
+
+const HiddenSelect = styled.select`
+  opacity: 0;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  -webkit-appearance: none;
+`;
 
 const Wrapper = styled.div`
   position: relative;
@@ -39,24 +47,14 @@ const Wrapper = styled.div`
   &:hover {
     color: ${COLORS.black};
   }
-  &:focus {
-    border: 2px solid #4374cb;
-    background-color: red;
+
+  &:focus-within {
+    outline: 2px solid ${COLORS.primary};
   }
 `;
 
 const InlineIcon = styled(Icon)`
   display: inline-block;
-`;
-const HiddenSelect = styled.select`
-  opacity: 0;
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  -webkit-appearance: none;
 `;
 
 export default Select;
